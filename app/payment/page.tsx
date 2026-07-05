@@ -1,0 +1,534 @@
+"use client";
+
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useAuth } from '@/components/AuthProvider';
+import { getProviderFromPhone, getProviderDisplayName } from '@/lib/phone-utils';
+import { getSubscriptionPlans } from '@/lib/subscriptions';
+import { SubscriptionPlan } from '@/lib/supabase';
+import { PaymentProviders } from '@/lib/payment-config';
+import Link from 'next/link';
+
+// Fallback to YoPayments if enabled (for backward compatibility)
+import { YoPaymentsService } from '@/lib/yopayments';
+
+function PaymentPageContent() {
+  const { user, loading: authLoading, refreshPremiumStatus } = useAuth();
+  const router = useRouter();
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [detectedMNO, setDetectedMNO] = useState<string>('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'failed' | 'timeout'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [transactionRef, setTransactionRef] = useState<string>('');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [modalPhoneNumber, setModalPhoneNumber] = useState('');
+  const [modalDetectedMNO, setModalDetectedMNO] = useState<string>('');
+
+  // Redirect if not signed in
+  useEffect(() => {
+    if (!authLoading && !user) router.push('/signin');
+  }, [user, authLoading, router]);
+
+  // Load subscription plans
+  useEffect(() => {
+    if (!user) return;
+    const loadPlans = async () => {
+      try {
+        const availablePlans = await getSubscriptionPlans();
+        setPlans(availablePlans);
+        // Auto-select recommended plan, or first plan
+        const recommended = availablePlans.find(p => p.recommended);
+        if (recommended) setSelectedPlan(recommended);
+        else if (availablePlans.length > 0) setSelectedPlan(availablePlans[0]);
+      } catch (error) {
+        console.error('Failed to load plans:', error);
+      }
+    };
+    loadPlans();
+  }, [user]);
+
+  // Detect mobile money provider
+  useEffect(() => {
+    if (phoneNumber.length >= 10) {
+      try {
+        // Use MakyPay if enabled, otherwise fallback to YoPayments
+        if (PaymentProviders.isMakyPayEnabled()) {
+          const provider = getProviderFromPhone(phoneNumber);
+          setDetectedMNO(getProviderDisplayName(provider));
+        } else if (PaymentProviders.isYoPaymentsEnabled()) {
+          const mno = YoPaymentsService.getAccountProviderCode(phoneNumber);
+          const mnoNames: Record<string, string> = {
+            'MTN_MOMO_UGA': 'MTN Mobile Money',
+            'AIRTEL_OAPI_UGA': 'Airtel Money',
+          };
+          setDetectedMNO(mnoNames[mno] || 'Unknown Network');
+        }
+      } catch {
+        setDetectedMNO('Invalid number');
+      }
+    } else {
+      setDetectedMNO('');
+    }
+  }, [phoneNumber]);
+
+  const handlePhoneNumberChange = (value: string) => {
+    setPhoneNumber(value.replace(/\D/g, ''));
+  };
+
+  const handleModalPhoneNumberChange = (value: string) => {
+    const cleanedValue = value.replace(/\D/g, '');
+    setModalPhoneNumber(cleanedValue);
+
+    // Detect MNO for modal
+    if (cleanedValue.length >= 10) {
+      try {
+        // Use MakyPay if enabled, otherwise fallback to YoPayments
+        if (PaymentProviders.isMakyPayEnabled()) {
+          const provider = getProviderFromPhone(cleanedValue);
+          setModalDetectedMNO(getProviderDisplayName(provider));
+        } else if (PaymentProviders.isYoPaymentsEnabled()) {
+          const mno = YoPaymentsService.getAccountProviderCode(cleanedValue);
+          const mnoNames: Record<string, string> = {
+            'MTN_MOMO_UGA': 'MTN Mobile Money',
+            'AIRTEL_OAPI_UGA': 'Airtel Money',
+          };
+          setModalDetectedMNO(mnoNames[mno] || 'Unknown Network');
+        }
+      } catch {
+        setModalDetectedMNO('Invalid number');
+      }
+    } else {
+      setModalDetectedMNO('');
+    }
+  };
+
+  const openPaymentModal = (plan: SubscriptionPlan) => {
+    setSelectedPlan(plan);
+    setModalPhoneNumber(phoneNumber); // Pre-fill with existing number if any
+    setModalDetectedMNO(detectedMNO); // Pre-fill with existing detection
+    setShowPaymentModal(true);
+  };
+
+  const closePaymentModal = () => {
+    setShowPaymentModal(false);
+    setModalPhoneNumber('');
+    setModalDetectedMNO('');
+  };
+
+  const proceedWithPayment = () => {
+    // Capture modal values before closing
+    const payPhone = modalPhoneNumber;
+    const payMNO = modalDetectedMNO;
+
+    // Transfer modal values to main state
+    setPhoneNumber(payPhone);
+    setDetectedMNO(payMNO);
+    setShowPaymentModal(false);
+
+    // Pass the captured phone number directly to avoid stale state
+    handlePayment(payPhone);
+  };
+
+  const handlePayment = async (overridePhone?: string) => {
+    const payPhone = overridePhone || phoneNumber;
+    if (!selectedPlan || !payPhone || !user) return;
+
+    setIsProcessing(true);
+    setPaymentStatus('processing');
+    setErrorMessage('');
+
+    try {
+      const amount = selectedPlan.amount || 10000;
+
+      // Get session access token
+      const { data: sessionData } = await (await import('@/lib/supabase')).supabase.auth.getSession();
+      const accessToken = sessionData?.session?.access_token;
+
+      // Determine which payment provider to use
+      const apiEndpoint = PaymentProviders.isMakyPayEnabled() 
+        ? '/api/makypay/initiate' 
+        : '/api/yopayments/initiate';
+
+      // Initiate payment
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          accessToken,
+          phoneNumber: payPhone,
+          amount,
+          description: `Subscription: ${selectedPlan.name}`,
+          paymentMethod: 'mobile_money',
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Payment initiation failed');
+
+      const result = data.transaction;
+      const transactionId = result.uuid || result.transactionReference || result.internalReference;
+      setTransactionRef(transactionId);
+      setPaymentStatus('processing');
+
+      // ── Frontend-driven polling loop ──────────────────────────────
+      const statusEndpoint = PaymentProviders.isMakyPayEnabled()
+        ? '/api/makypay/status'
+        : '/api/yopayments/status';
+
+      const MAX_POLLS = 24; // 24 × 5s = 2 minutes
+      const POLL_INTERVAL = 5000;
+
+      for (let attempt = 0; attempt < MAX_POLLS; attempt++) {
+        await new Promise(r => setTimeout(r, POLL_INTERVAL));
+
+        try {
+          const pollResponse = await fetch(statusEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+              PaymentProviders.isMakyPayEnabled()
+                ? { transactionId }
+                : { transactionReference: transactionId }
+            ),
+          });
+
+          if (!pollResponse.ok) continue; // retry on error
+
+          const pollData = await pollResponse.json();
+          const txStatus = pollData.transaction;
+
+          if (txStatus?.isCompleted) {
+            // Payment confirmed — activate subscription
+            const completeEndpoint = PaymentProviders.isMakyPayEnabled()
+              ? '/api/makypay/complete'
+              : '/api/yopayments/complete';
+
+            const completeResponse = await fetch(completeEndpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(
+                PaymentProviders.isMakyPayEnabled()
+                  ? {
+                      userId: user.id,
+                      accessToken,
+                      transactionId,
+                      subscriptionPlan: selectedPlan.name.toLowerCase(),
+                      subscriptionDuration: selectedPlan.duration_in_days || 30,
+                    }
+                  : {
+                      userId: user.id,
+                      accessToken,
+                      transactionReference: transactionId,
+                      subscriptionPlan: selectedPlan.name.toLowerCase(),
+                      subscriptionDuration: selectedPlan.duration_in_days || 30,
+                    }
+              ),
+            });
+
+            if (!completeResponse.ok) {
+              const completeData = await completeResponse.json();
+              throw new Error(completeData.error || 'Failed to complete subscription');
+            }
+
+            setPaymentStatus('success');
+            // Refresh premium status in AuthProvider so isPremium updates immediately
+            await refreshPremiumStatus();
+            setTimeout(() => { window.location.href = '/'; }, 3000);
+            return; // exit polling loop
+          }
+
+          if (txStatus?.isFailed) {
+            setPaymentStatus('failed');
+            setErrorMessage(txStatus.displayStatus || 'Payment was declined');
+            return;
+          }
+          // Still pending — continue polling
+        } catch {
+          // Network error on this poll — continue trying
+        }
+      }
+
+      // Polling exhausted without completion — show warning, not failure
+      setPaymentStatus('timeout');
+      setErrorMessage('Payment is still processing. If you approved on your phone, your subscription will activate shortly.');
+    } catch (error) {
+      setPaymentStatus('failed');
+      setErrorMessage(error instanceof Error ? error.message : 'An unexpected error occurred');
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#E50914] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  return (
+    <div className="min-h-screen bg-black text-white px-6 py-10">
+      <div className="max-w-5xl mx-auto">
+        <Link href="/" className="text-[#E50914] hover:text-orange-300 inline-flex items-center space-x-2 mb-6">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          <span>Back to Home</span>
+        </Link>
+
+        <h1 className="text-3xl font-bold text-center mb-10 text-[#E50914]">Make Payment</h1>
+
+        {paymentStatus === 'processing' && (
+          <div className="mb-6 p-4 bg-blue-900 border border-blue-700 rounded-xl">
+            <div className="flex items-center space-x-3">
+              <div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+              <div>
+                <p className="text-blue-400 font-medium">Processing Payment...</p>
+                <p className="text-blue-300 text-sm mt-1">Please check your phone and confirm the transaction. This may take a few moments.</p>
+                {transactionRef && (
+                  <p className="text-blue-300 text-xs mt-2">Transaction Ref: {transactionRef.substring(0, 8)}...</p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {paymentStatus === 'success' && (
+          <div className="mb-6 p-4 bg-green-900 border border-green-700 rounded-xl">
+            <p className="text-green-400 font-medium">Payment Successful! Your subscription has been activated and access granted immediately.</p>
+            <Link href="/" className="inline-block mt-3 px-4 py-2 bg-[#E50914] rounded-lg hover:bg-[#b80710]">
+              Start Watching
+            </Link>
+          </div>
+        )}
+
+        {paymentStatus === 'failed' && (
+          <div className="mb-6 p-4 bg-red-900 border border-red-700 rounded-xl">
+            <p className="text-red-400 font-medium">Payment Failed: {errorMessage}</p>
+            <button onClick={() => setPaymentStatus('idle')} className="mt-3 px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700">
+              Try Again
+            </button>
+          </div>
+        )}
+
+        {paymentStatus === 'timeout' && (
+          <div className="mb-6 p-4 bg-yellow-900/60 border border-yellow-600 rounded-xl">
+            <div className="flex items-start space-x-3">
+              <svg className="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              <div>
+                <p className="text-yellow-400 font-medium">Payment Still Processing</p>
+                <p className="text-yellow-300 text-sm mt-1">{errorMessage}</p>
+                <p className="text-yellow-300/70 text-xs mt-2">You can safely close this page. Your subscription will activate automatically once payment is confirmed.</p>
+                <div className="flex space-x-3 mt-3">
+                  <Link href="/" className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-black rounded-lg text-sm font-medium">
+                    Go to Home
+                  </Link>
+                  <button onClick={() => setPaymentStatus('idle')} className="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 text-sm">
+                    Try Another Payment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {(paymentStatus === 'idle' || paymentStatus === 'timeout') && (
+          <>
+            <h2 className="text-2xl font-bold mb-6 text-center">Choose Your Plan</h2>
+            <div className={`grid gap-6 mb-6 ${
+              plans.length <= 2 ? 'grid-cols-1 md:grid-cols-2' : 
+              plans.length === 3 ? 'grid-cols-1 md:grid-cols-3' : 
+              'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+            }`}>
+              {plans.map(plan => (
+                <div 
+                  key={plan.id} 
+                  onClick={() => openPaymentModal(plan)}
+                  className={`cursor-pointer p-6 rounded-2xl border transition-all hover:border-[#E50914] hover:bg-[#E50914]/10 hover:scale-[1.02] ${
+                    plan.recommended ? 'border-blue-500 ring-1 ring-blue-500/20' : 'border-gray-700'
+                  } ${selectedPlan?.id === plan.id ? 'border-[#E50914] bg-[#E50914]/10' : ''}`}
+                >
+                  {plan.recommended && (
+                    <span className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full mb-4 inline-block font-bold">Recommended</span>
+                  )}
+                  <h3 className="text-2xl font-bold mb-1 capitalize">{plan.name}</h3>
+                  <p className="font-medium text-lg text-gray-300 mb-1">
+                    {plan.duration_in_days === 1 ? '1 Day' : `${plan.duration_in_days} Days`}
+                  </p>
+                  {plan.description && (
+                    <p className="text-sm text-gray-400 mb-3">{plan.description}</p>
+                  )}
+                  <p className="text-3xl font-bold mb-4">UGX {plan.amount?.toLocaleString()}</p>
+                  
+                  {/* Features list */}
+                  {plan.features && plan.features.length > 0 && (
+                    <ul className="space-y-1.5 mb-4">
+                      {plan.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center gap-2 text-sm text-gray-300">
+                          <svg className="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  
+                  <div className="flex items-center justify-center">
+                    <span className="text-sm text-[#E50914] font-medium">Tap to Pay →</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Instructions for new modal flow */}
+            <div className="text-center py-8">
+              <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6">
+                <div className="mb-4">
+                  <svg className="w-12 h-12 text-[#E50914] mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Choose Your Plan</h3>
+                <p className="text-gray-400 text-sm">
+                  Tap on any plan above to enter your mobile money number and complete payment instantly.
+                </p>
+              </div>
+            </div>
+
+            {/* Payment Information */}
+            <div className="mt-6 p-4 bg-blue-900/30 border border-blue-700/50 rounded-xl">
+              <div className="flex items-start space-x-3">
+                <svg className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <h3 className="text-blue-400 font-medium mb-2">Payment Information</h3>
+                  <ul className="text-sm text-blue-300 space-y-1">
+                    <li>• You will receive a payment prompt on your mobile phone</li>
+                    <li>• Please confirm the payment using your mobile money PIN</li>
+                    <li>• Your subscription will be activated once payment is confirmed</li>
+                    <li>• This process may take a few minutes to complete</li>
+                    <li>• Keep your phone nearby to approve the transaction</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Payment Modal */}
+        {showPaymentModal && selectedPlan && (
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-md flex items-center justify-center z-50 p-4">
+            <div className="bg-gray-900 border border-gray-700 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+              {/* Modal Header */}
+              <div className="p-6 border-b border-gray-700">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white">Complete Payment</h3>
+                  <button
+                    onClick={closePaymentModal}
+                    className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800 transition-colors"
+                    aria-label="Close payment modal"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6">
+                {/* Selected Plan Summary */}
+                <div className="bg-[#E50914]/10 border border-[#E50914]/20 rounded-xl p-4 mb-6">
+                  <h4 className="text-[#E50914] font-semibold mb-2">Selected Plan</h4>
+                  <p className="text-white font-medium text-lg">{selectedPlan.name}</p>
+                  <p className="text-gray-400 text-sm">{selectedPlan.description}</p>
+                  <p className="text-gray-400 text-sm">Duration: {selectedPlan.duration_in_days} days</p>
+                  <p className="text-2xl font-bold text-white mt-2">UGX {selectedPlan.amount?.toLocaleString()}</p>
+                </div>
+
+                {/* Phone Number Input */}
+                <div className="mb-6">
+                  <label htmlFor="modal-phone" className="block text-sm font-medium mb-2 text-white">
+                    Mobile Money Number
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="modal-phone"
+                      type="tel"
+                      value={modalPhoneNumber}
+                      onChange={(e) => handleModalPhoneNumberChange(e.target.value)}
+                      placeholder="Enter your phone number (e.g., 0771234567)"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-[#E50914] text-white placeholder-gray-400"
+                      maxLength={15}
+                    />
+                    {modalDetectedMNO && (
+                      <div className="absolute right-3 top-3 flex items-center space-x-2">
+                        <span className={`text-xs px-2 py-1 rounded ${modalDetectedMNO === 'Invalid number' ? 'bg-red-900 text-red-300' : 'bg-green-900 text-green-300'}`}>
+                          {modalDetectedMNO}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-400 mt-2">
+                    Enter your MTN Mobile Money or Airtel Money number
+                  </p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex space-x-3">
+                  <button
+                    onClick={closePaymentModal}
+                    className="flex-1 py-3 px-4 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={proceedWithPayment}
+                    disabled={!modalPhoneNumber || modalPhoneNumber.length < 10 || modalDetectedMNO === 'Invalid number'}
+                    className="flex-1 py-3 px-4 bg-[#E50914] hover:bg-[#b80710] disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v2a2 2 0 002 2z" />
+                    </svg>
+                    <span>Pay Now</span>
+                  </button>
+                </div>
+
+                {/* Payment Info in Modal */}
+                <div className="mt-6 p-3 bg-blue-900/20 border border-blue-700/30 rounded-lg">
+                  <p className="text-xs text-blue-300">
+                    💡 You&apos;ll receive a payment prompt on your phone to confirm the transaction.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#E50914] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <PaymentPageContent />
+    </Suspense>
+  );
+}
+

@@ -1,0 +1,125 @@
+
+@import "tailwindcss";
+
+:root {
+  --color-primary: #E50914;
+  --color-primary-dark: #b80710;
+  --color-accent: #FF1A1A;
+  --font-roboto: 'Roboto', sans-serif;
+}
+
+body {
+  background: #141414;
+  color: #ffffff;
+  font-family: var(--font-roboto);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Cinematic page transitions ── */
+@keyframes cinemaFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+main, [data-page] {
+  animation: cinemaFadeIn 0.4s ease-out both;
+}
+
+/* ── Subtle film-grain overlay on hero sections ── */
+.hero-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+
+/* ── Cinematic vignette on images ── */
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+  pointer-events: none;
+}
+
+/* ── Scrollbar ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+/* Thin red scrollbar for desktop */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #E50914; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #b80710; }
+
+/* ── Swiper ── */
+.swiper-button-next, .swiper-button-prev {
+  color: #fff !important;
+  transition: color 0.2s ease;
+  background: none !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 0 !important;
+}
+.swiper-button-next:after, .swiper-button-prev:after { font-size: 16px; }
+@media (max-width: 767px) {
+  .swiper-button-next, .swiper-button-prev { display: none !important; }
+}
+.swiper-button-next:hover, .swiper-button-prev:hover { color: #E50914 !important; background: none !important; }
+.swiper-pagination-bullet-active { background: var(--color-primary) !important; }
+
+/* ── Video player ── */
+.video-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  background: black !important;
+}
+.no-scroll {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+}
+
+/* ── Card hover glow ── */
+.card-glow:hover {
+  box-shadow: 0 0 0 1px rgba(229,9,20,0.4), 0 8px 32px rgba(0,0,0,0.6);
+}
+
+/* ── Netflix-style modal backdrop ── */
+.modal-backdrop {
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
+}
+
+/* ── Cinematic text shadow for hero titles ── */
+.cinema-title {
+  text-shadow: 0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.5);
+}
+
+/* ── Smooth image loading ── */
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* ── Focus ring ── */
+*:focus-visible {
+  outline: 2px solid #E50914;
+  outline-offset: 2px;
+}
+
+/* ── Selection color ── */
+::selection {
+  background: rgba(229,9,20,0.3);
+  color: #fff;
+}
