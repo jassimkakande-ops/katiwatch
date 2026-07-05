@@ -8,7 +8,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#0a0a0a] text-white pt-14 pb-8 border-t border-gray-800/60">
+    <footer className="bg-[#0a0a0a] text-white pt-14 pb-20 lg:pb-8 border-t border-gray-800/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Brand + Links row */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-10 mb-10">

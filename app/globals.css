@@ -47,7 +47,22 @@ main, [data-page] {
   pointer-events: none;
 }
 
-/* ── Scrollbar ── */
+/* ── Safe area inset for mobile nav ── */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ── Prevent text size inflation on iOS ── */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── Tap highlight removal for interactive elements ── */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

@@ -274,7 +274,7 @@ function PaymentPageContent() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 py-10">
+    <div className="min-h-screen bg-black text-white px-4 sm:px-6 py-10">
       <div className="max-w-5xl mx-auto">
         <Link href="/" className="text-[#E50914] hover:text-orange-300 inline-flex items-center space-x-2 mb-6">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

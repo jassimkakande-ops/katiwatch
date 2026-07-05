@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Play, Info, Plus, Star, Calendar, Globe, ChevronRight, Heart } from "lucide-react";
+import { Play, Info, Plus, Star, Calendar, Mic, ChevronRight, Heart } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -164,11 +164,7 @@ export default function HomePage() {
             <div className="relative z-10 flex items-end h-full pb-12 md:pb-20">
               <div className="container mx-auto px-4 md:px-12">
                 <div className="max-w-2xl">
-                  <div className="inline-flex items-center gap-2 bg-[#E50914] px-4 py-1.5 rounded-full mb-4">
-                    <Star className="w-4 h-4 fill-white" />
-                    <span className="text-sm font-bold">Featured</span>
-                  </div>
-                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-4 text-white leading-tight">{featuredItem.title}</h2>
+                  <h2 className="text-3xl md:text-6xl lg:text-7xl font-black mb-4 text-white leading-tight">{featuredItem.title}</h2>
                   <p className="text-sm md:text-base mb-6 text-gray-200 leading-relaxed max-w-xl line-clamp-3">
                     {featuredItem.description || "Experience the best in entertainment with stunning visuals and captivating storytelling."}
                   </p>
@@ -177,7 +173,7 @@ export default function HomePage() {
                       <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-[#E50914]" />{new Date(featuredItem.release_date).getFullYear()}</div>
                     )}
                     {featuredItem.vjs && (
-                      <div className="flex items-center gap-2"><Globe className="w-4 h-4 text-[#E50914]" />{featuredItem.vjs.name}</div>
+                      <div className="flex items-center gap-2"><Mic className="w-4 h-4 text-[#E50914]" />{featuredItem.vjs.name}</div>
                     )}
                   </div>
                   <div className="flex items-center gap-4">
