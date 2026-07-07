@@ -1,7 +1,7 @@
-// katiwatchUg Service Worker
+// katiwatch Service Worker
 // Handles caching for PWA offline support
 
-const CACHE_NAME = 'katiwatchug-v1';
+const CACHE_NAME = 'katiwatch-v1';
 const OFFLINE_URL = '/';
 
 // Assets to precache for offline shell

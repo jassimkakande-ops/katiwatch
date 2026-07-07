@@ -61,7 +61,7 @@ export function useOneSignal(): UseOneSignalReturn {
           notifyButton: { enable: false },
           welcomeNotification: {
             disable: false,
-            title: 'katiwatchUg',
+            title: 'katiwatch',
             message: "Welcome! You'll now get notified about new movies and series.",
           },
         });

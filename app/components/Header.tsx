@@ -490,7 +490,7 @@ export default function Header() {
                   ) : (
                     <div className="px-4 py-2">
                       <p className="text-xs text-gray-500 text-center">
-                        katiwatchUg - Your Entertainment Hub
+                        katiwatch - Your Entertainment Hub
                       </p>
                     </div>
                   )}

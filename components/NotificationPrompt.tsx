@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Bell, BellOff, X } from 'lucide-react';
 import { useOneSignal } from '@/lib/hooks/useOneSignal';
 
-const DISMISSED_KEY = 'katiwatchug-notif-dismissed';
+const DISMISSED_KEY = 'katiwatch-notif-dismissed';
 const PROMPT_DELAY_MS = 8000;
 
 export default function NotificationPrompt() {

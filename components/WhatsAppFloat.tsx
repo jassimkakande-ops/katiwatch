@@ -6,7 +6,7 @@ const WHATSAPP_NUMBER = "256757588585"; // +256 757588585
 export default function WhatsAppFloat() {
   const handleClick = () => {
     window.open(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello! I need support with katiwatchUg.")}`,
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hello! I need support with katiwatch.")}`,
       "_blank",
       "noopener,noreferrer"
     );

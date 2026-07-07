@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Download, X, Smartphone } from 'lucide-react';
 import { useInstallPrompt } from '@/lib/hooks/useInstallPrompt';
 
-const DISMISS_KEY = 'katiwatchug-install-dismissed';
+const DISMISS_KEY = 'katiwatch-install-dismissed';
 
 export default function InstallAppBanner() {
   const { installState, isIOS, canInstall, isStandalone, promptInstall, dismiss } = useInstallPrompt();
@@ -55,7 +55,7 @@ export default function InstallAppBanner() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.jpeg" alt="Katiwatch" className="w-10 h-10 object-cover flex-shrink-0" />
               <div>
-                <p className="text-white font-bold text-sm">katiwatchUg</p>
+                <p className="text-white font-bold text-sm">katiwatch</p>
                 <p className="text-gray-400 text-xs mt-0.5">
                   {isIOS ? 'Add to home screen for the best experience' : 'Install for faster access & offline support'}
                 </p>

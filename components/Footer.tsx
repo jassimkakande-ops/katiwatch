@@ -45,7 +45,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="relative border-t border-gray-800/60 pt-6">
           <p className="text-center text-gray-600 text-xs mt-2">
-            © {currentYear} KatiwatchUg — We are Entertainment. All Rights Reserved.
+            © {currentYear} katiwatch — We are Entertainment. All Rights Reserved.
           </p>
         </div>
       </div>

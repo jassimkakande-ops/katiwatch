@@ -1,5 +1,5 @@
 -- ============================================================
--- Katiwatch / KatiwatchUg - Complete Supabase Schema
+-- Katiwatch / katiwatch - Complete Supabase Schema
 -- Run this entire file in Supabase SQL Editor on a fresh project.
 -- ============================================================
 

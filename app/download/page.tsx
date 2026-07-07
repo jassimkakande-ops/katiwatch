@@ -47,7 +47,7 @@ const iosSteps = [
 
 // ----- Desktop guide -----
 const desktopSteps = [
-  { step: 1, emoji: '🌐', title: 'Open in Chrome or Edge', desc: 'Navigate to katiwatchug.com in Chrome, Edge, or Brave' },
+  { step: 1, emoji: '🌐', title: 'Open in Chrome or Edge', desc: 'Navigate to katiwatch.com in Chrome, Edge, or Brave' },
   { step: 2, emoji: '📥', title: 'Click the install icon', desc: 'Look for the install icon (⊕) in the address bar on the right' },
   { step: 3, emoji: '✅', title: 'Confirm installation', desc: 'Click "Install" in the popup and the app opens in its own window' },
 ];
@@ -234,8 +234,8 @@ export default function DownloadPage() {
                 key={key}
                 onClick={() => setActiveTab(key)}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === key
-                    ? 'text-white shadow-md'
-                    : 'text-gray-500 hover:text-gray-300'
+                  ? 'text-white shadow-md'
+                  : 'text-gray-500 hover:text-gray-300'
                   }`}
                 style={
                   activeTab === key
@@ -268,7 +268,7 @@ export default function DownloadPage() {
                     <Image src="/logo.jpeg" alt="App" width={56} height={56} className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <p className="text-white font-bold text-base">katiwatchUg</p>
+                    <p className="text-white font-bold text-base">katiwatch</p>
                     <p className="text-gray-400 text-sm">Progressive Web App</p>
                     <div className="flex items-center gap-1 mt-1">
                       {[...Array(5)].map((_, i) => (
@@ -310,7 +310,7 @@ export default function DownloadPage() {
                 <div className="space-y-3">
                   <p className="text-gray-400 text-sm font-medium text-center">Or follow these steps in Chrome:</p>
                   {[
-                    { step: 1, emoji: '🌐', text: 'Open katiwatchug.com in Chrome on your Android phone' },
+                    { step: 1, emoji: '🌐', text: 'Open katiwatch.com in Chrome on your Android phone' },
                     { step: 2, emoji: '⋮', text: 'Tap the three-dot menu (⋮) in the top-right corner of Chrome' },
                     { step: 3, emoji: '📲', text: 'Tap "Add to Home screen" or "Install app"' },
                     { step: 4, emoji: '✅', text: 'Tap "Install" to confirm — the app icon appears on your home screen' },

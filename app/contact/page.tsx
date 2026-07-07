@@ -2,15 +2,15 @@ import { Mail, MessageSquare, Clock, Send, Facebook, Twitter, Instagram, Phone }
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Contact katiwatchUg - Get Support & Help',
-  description: 'Contact katiwatchUg for movie recommendations, subscription support, or feedback. Reach Uganda\'s #1 streaming platform for translated movies.',
+  title: 'Contact katiwatch - Get Support & Help',
+  description: 'Contact katiwatch for movie recommendations, subscription support, or feedback. Reach Uganda\'s #1 streaming platform for translated movies.',
   alternates: {
     canonical: '/contact',
   },
   openGraph: {
-    title: 'Contact katiwatchUg - Get Support & Help',
-    description: 'Contact katiwatchUg for movie recommendations, subscription support, or feedback.',
-    url: 'https://katiwatchug.com/contact',
+    title: 'Contact katiwatch - Get Support & Help',
+    description: 'Contact katiwatch for movie recommendations, subscription support, or feedback.',
+    url: 'https://katiwatch.com/contact',
   },
 };
 
@@ -111,10 +111,10 @@ export default function ContactPage() {
                         Send us an email anytime for support or inquiries.
                       </p>
                       <a
-                        href="mailto:katiwatchug@gmail.com"
+                        href="mailto:katiwatch@gmail.com"
                         className="text-[#E50914] hover:text-white transition-colors font-medium"
                       >
-                        katiwatchug@gmail.com
+                        katiwatch@gmail.com
                       </a>
                     </div>
                   </div>

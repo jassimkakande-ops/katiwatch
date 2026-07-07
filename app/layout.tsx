@@ -53,7 +53,7 @@ export const metadata: Metadata = {
         url: '/logo.jpeg',
         width: 800,
         height: 600,
-        alt: 'katiwatchUg - Uganda Premium Movie Streaming',
+        alt: 'katiwatch -We Are Entertainment',
       },
     ],
     locale: 'en_UG',
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     title: 'Katiwatch - We Are Entertainment',
     description: 'Uganda\'s #1 premium streaming platform. Watch movies translated by VJ Junior, VJ Jjingo, ICE P and more.',
     images: ['/logo.jpeg'],
-    site: '@katiwatchug',
+    site: '@katiwatch',
   },
   icons: {
     icon: '/logo.jpeg',
@@ -97,7 +97,7 @@ const jsonLd = {
       '@id': 'https://katiwatch.com/#website',
       url: 'https://katiwatch.com',
       name: 'Katiwatch',
-      alternateName: ['katiwatch.com', 'katiwatchUg', 'katiwatchug.com'],
+      alternateName: ['katiwatch.com', 'katiwatch'],
       description: 'Uganda\'s #1 premium movie streaming platform with translated movies by top VJs.',
       publisher: { '@id': 'https://katiwatch.com/#organization' },
       potentialAction: {

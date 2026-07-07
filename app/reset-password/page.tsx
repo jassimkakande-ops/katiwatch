@@ -165,7 +165,7 @@ function ResetPasswordForm() {
                 Password Reset Successful
               </CardTitle>
               <CardDescription className="text-gray-600">
-                Password reset successfully. Open the katiwatchUg app to sign in.
+                Password reset successfully. Open the katiwatch app to sign in.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -180,7 +180,7 @@ function ResetPasswordForm() {
                 </h3>
                 <p className="text-orange-800 text-sm">
                   Your password has been successfully reset. Please open the
-                  katiwatchUg mobile app and sign in with your new password.
+                  katiwatch mobile app and sign in with your new password.
                 </p>
               </div>
 

@@ -3,15 +3,15 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'About katiwatchUg - Uganda\'s #1 Movie Streaming Platform',
-  description: 'Learn about katiwatchUg, Uganda\'s premier streaming platform for translated movies and TV shows. Featuring content from top VJs like VJ Junior, VJ Jjingo, ICE P and more.',
+  title: 'About katiwatch - We Are Entertainment',
+  description: 'Learn about katiwatch, Experience Entertainment Like Never Before. Watch the latest blockbuster movies and TV shows with translations by VJ Junior, VJ Jjingo, ICE P, and more—all in one place.',
   alternates: {
     canonical: '/about',
   },
   openGraph: {
-    title: 'About katiwatchUg - Uganda\'s #1 Movie Streaming Platform',
-    description: 'Learn about katiwatchUg, Uganda\'s premier streaming platform for translated movies and TV shows.',
-    url: 'https://katiwatchug.com/about',
+    title: 'About katiwatch - Uganda\'s #1 Movie Streaming Platform',
+    description: 'Learn about katiwatch, Uganda\'s premier streaming platform for translated movies and TV shows.',
+    url: 'https://katiwatch.com/about',
   },
 };
 
@@ -21,7 +21,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 text-center mb-20">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 uppercase tracking-wider text-white">
-          About <span className="text-[#E50914]">katiwatchUg</span>
+          About <span className="text-[#E50914]">katiwatch</span>
         </h1>
         <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
           We are passionate movie enthusiasts dedicated to bringing you thoughtful reviews,
