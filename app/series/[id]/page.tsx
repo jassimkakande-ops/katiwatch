@@ -124,7 +124,7 @@ export default function SeriesDetailsPage() {
 
         setLoading(false);
 
-        if (seriesData?.genre_ids?.length > 0) {
+        if ((seriesData?.genre_ids?.length ?? 0) > 0) {
           try {
             const rel = await api.getRelatedSeriesByGenre(params.id as string, seriesData.genre_ids as string[], 10) as SeriesWithVJ[];
             setRelatedSeries(rel || []);

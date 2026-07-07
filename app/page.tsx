@@ -111,7 +111,7 @@ export default function HomePage() {
           );
         }, 500);
     return () => {
-      if (requestIdleCallback) cancelIdleCallback(id as number);
+      if (typeof requestIdleCallback !== 'undefined') cancelIdleCallback(id as number);
       else clearTimeout(id as any);
     };
   }, [contentLoading]);

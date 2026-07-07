@@ -77,9 +77,9 @@ export default function MovieDetailsPage() {
 
       setLoading(false);
 
-      if (data.genre_ids?.length > 0) {
-        setGenres(data.genre_ids.map(g => ({ id: g, name: g.charAt(0).toUpperCase() + g.slice(1) })));
-        try { const r = await api.getRelatedMoviesByGenre(params.id as string, data.genre_ids, 8); setRelated((r || []) as unknown as MovieWithVJ[]); } catch {}
+      if ((data.genre_ids?.length ?? 0) > 0) {
+        setGenres((data.genre_ids ?? []).map(g => ({ id: g, name: g.charAt(0).toUpperCase() + g.slice(1) })));
+        try { const r = await api.getRelatedMoviesByGenre(params.id as string, data.genre_ids ?? [], 8); setRelated((r || []) as unknown as MovieWithVJ[]); } catch {}
       }
       setRelatedLoaded(true);
       dataFetchedRef.current = params.id as string;
