@@ -53,6 +53,7 @@ export function useOneSignal(): UseOneSignalReturn {
     }
 
     window.OneSignalDeferred.push(async (OneSignal) => {
+      if (!OneSignal) return;
       try {
         await OneSignal.init({
           appId,
