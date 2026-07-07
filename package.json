@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"next dev --turbopack -p 4577\" \"cd panel && npm run dev\"",
-    "build": "next build && cd panel && npm run build",
+    "build": "next build && cd panel && npm install --force && npm run build",
     "start": "concurrently \"next start -p 4577\" \"cd panel && npm run start\"",
     "lint": "next lint",
     "test": "vitest run"
