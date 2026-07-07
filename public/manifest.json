@@ -1,14 +1,16 @@
 {
-  "name": "NicholMoviesUg",
-  "short_name": "NicholMovies",
-  "description": "Uganda's #1 premium streaming platform. Watch blockbuster movies and TV shows translated by VJ Junior, VJ Jjingo, ICE P and more.",
+  "name": "Katiwatch",
+  "short_name": "Katiwatch",
+  "description": "",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#141414",
   "theme_color": "#E50914",
-  "categories": ["entertainment"],
+  "categories": [
+    "entertainment"
+  ],
   "lang": "en-UG",
   "icons": [
     {
@@ -36,7 +38,7 @@
       "sizes": "1280x720",
       "type": "image/jpeg",
       "form_factor": "wide",
-      "label": "NicholMoviesUg Home Screen"
+      "label": "Katiwatch Home Screen"
     }
   ],
   "shortcuts": [
