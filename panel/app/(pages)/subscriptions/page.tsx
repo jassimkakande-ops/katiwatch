@@ -646,7 +646,11 @@ export default function SubscriptionsPage() {
               <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Plan</label>
               {isLoadingPlans ? (
                 <div className="w-full px-4 py-3 border border-gray-800 rounded-lg bg-black text-gray-500 flex items-center">
-                  <Loader2 className="h-4 w-4 animate-spin mr-2 text-[#E50914]" />
+                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
                   Loading plans...
                 </div>
               ) : (

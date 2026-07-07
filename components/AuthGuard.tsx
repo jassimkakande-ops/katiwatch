@@ -46,7 +46,11 @@ export default function AuthGuard({
   if (loading) {
     return (
       <div className="flex items-center justify-center p-4">
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#E50914]"></div>
+        <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
       </div>
     );
   }

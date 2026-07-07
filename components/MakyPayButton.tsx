@@ -285,7 +285,11 @@ export default function MakyPayButton({
                 >
                   {isProcessing ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
                       <span>Processing...</span>
                     </>
                   ) : (

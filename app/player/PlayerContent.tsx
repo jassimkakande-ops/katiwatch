@@ -383,7 +383,11 @@ export default function PlayerContent() {
     return (
       <div className="fixed inset-0 bg-black flex items-center justify-center px-4">
         <div className="text-center text-white max-w-sm w-full">
-          <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-[#E50914] mx-auto mb-4"></div>
+          <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
           <h2 className="text-lg sm:text-xl font-semibold mb-2">Loading Video...</h2>
           <p className="text-sm sm:text-base text-gray-400">Please wait while we prepare your stream</p>
         </div>
@@ -450,7 +454,11 @@ export default function PlayerContent() {
         {switchingEpisode && (
           <div className="absolute inset-0 bg-black/80 z-40 flex items-center justify-center">
             <div className="text-center text-white">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E50914] mx-auto mb-4"></div>
+              <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
               <p className="text-lg font-semibold">Switching Episode...</p>
             </div>
           </div>

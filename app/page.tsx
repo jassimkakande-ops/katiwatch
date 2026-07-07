@@ -288,7 +288,11 @@ export default function HomePage() {
             ))}
           </div>
           {contentLoading ? <SwiperSkeleton /> : filterLoading ? (
-            <div className="flex justify-center py-12"><div className="w-7 h-7 border-2 border-[#E50914] border-t-transparent rounded-full animate-spin" /></div>
+            <div className="flex justify-center py-12"><span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span></div>
           ) : (
             <Swiper {...swiperProps} className="movies-swiper">
               {filteredMovies.slice(0, 16).map(movie => (

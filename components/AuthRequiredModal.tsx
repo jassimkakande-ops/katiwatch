@@ -46,7 +46,11 @@ export default function AuthRequiredModal({ isOpen, onClose, action, requirePrem
     return (
       <NetflixModal onClose={onClose}>
         <div className="flex flex-col items-center py-8">
-          <div className="w-10 h-10 border-2 border-[#E50914] border-t-transparent rounded-full animate-spin mb-4" />
+          <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
           <p className="text-gray-400 text-sm">Loading...</p>
         </div>
       </NetflixModal>

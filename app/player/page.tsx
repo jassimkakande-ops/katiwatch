@@ -8,7 +8,11 @@ export default function PlayerPage() {
     <Suspense fallback={
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center text-white">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#E50914] mx-auto mb-4"></div>
+          <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
           <h2 className="text-xl font-semibold mb-2">Loading...</h2>
         </div>
       </div>

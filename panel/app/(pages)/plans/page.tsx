@@ -294,7 +294,11 @@ export default function PlansPage() {
       {/* Plans Grid */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-[#E50914]" />
+          <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
         </div>
       ) : plans.length === 0 ? (
         <div className="bg-[#1a1c21] rounded-2xl p-12 border border-gray-800 text-center">
@@ -404,7 +408,11 @@ export default function PlansPage() {
                         disabled={deleting}
                         className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-xs font-bold"
                       >
-                        {deleting ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Yes'}
+                        {deleting ? <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span> : 'Yes'}
                       </Button>
                       <Button
                         onClick={() => setDeleteConfirm(null)}
@@ -624,7 +632,11 @@ export default function PlansPage() {
               className="bg-[#E50914] text-white hover:bg-[#b80710] w-full sm:w-auto uppercase tracking-wider font-bold border-none"
             >
               {saving ? (
-                <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Saving...</>
+                <><span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span> Saving...</>
               ) : (
                 editingPlan ? 'Update Plan' : 'Create Plan'
               )}

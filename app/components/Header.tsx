@@ -108,7 +108,11 @@ export default function Header() {
             {/* Mobile User Section */}
             <div className="flex items-center lg:hidden">
               {loading ? (
-                <div className="w-10 h-10 border-2 border-[#E50914] border-t-transparent rounded-full animate-spin"></div>
+                <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
               ) : user ? (
                 <>
                   {/* Mobile User Avatar */}
@@ -277,7 +281,11 @@ export default function Header() {
             </Link>
 
             {loading ? (
-              <div className="w-8 h-8 border-2 border-[#E50914] border-t-transparent rounded-full animate-spin"></div>
+              <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
             ) : user ? (
               <>
                 {/* Premium Badge - Show only if user is not premium */}

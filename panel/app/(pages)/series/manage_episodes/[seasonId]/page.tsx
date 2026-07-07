@@ -531,7 +531,11 @@ export default function ManageEpisodesPage() {
 
         {loading && (
           <div className="flex items-center justify-center mt-8 p-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#E50914]"></div>
+            <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+</span>
             <span className="ml-3 text-gray-400 font-bold uppercase tracking-wider text-sm">Loading episodes...</span>
           </div>
         )}
