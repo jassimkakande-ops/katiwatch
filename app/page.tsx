@@ -98,22 +98,13 @@ export default function HomePage() {
   useEffect(() => {
     if (contentLoading || genresFetched.current) return;
     genresFetched.current = true;
-    // Defer to next idle frame so it doesn't block paint
-    const id = requestIdleCallback
-      ? requestIdleCallback(() => {
-          import('@/lib/api').then(api =>
-            api.getGenreRowsForHome(12).then(rows => setGenreRows(rows)).catch(() => {})
-          );
-        }, { timeout: 3000 })
-      : setTimeout(() => {
-          import('@/lib/api').then(api =>
-            api.getGenreRowsForHome(12).then(rows => setGenreRows(rows)).catch(() => {})
-          );
-        }, 500);
-    return () => {
-      if (typeof requestIdleCallback !== 'undefined') cancelIdleCallback(id as number);
-      else clearTimeout(id as any);
-    };
+    // Use setTimeout as a safe fallback — requestIdleCallback is not supported on iOS Safari
+    const id = setTimeout(() => {
+      import('@/lib/api').then(api =>
+        api.getGenreRowsForHome(12).then(rows => setGenreRows(rows)).catch(() => {})
+      );
+    }, 500);
+    return () => clearTimeout(id);
   }, [contentLoading]);
 
   // Genre filter
