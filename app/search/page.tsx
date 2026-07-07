@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react"
 import { NetflixCard } from "@/components/NetflixCard"
-import { Search, X, ChevronDown } from "lucide-react"
+import { Search, X, ChevronDown, Filter } from "lucide-react"
 
 interface ContentItem {
   id: string
@@ -152,16 +152,6 @@ export default function SearchPage() {
     }
   }, [page, fetchResults])
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    if (loading || loadingMore || !hasMore) return;
-    const { scrollLeft, scrollWidth, clientWidth } = e.currentTarget;
-    // Load more if we are within 500px of the end
-    if (scrollWidth - scrollLeft <= clientWidth + 500) {
-      setPage(prev => prev + 1);
-    }
-  };
-
-
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -195,113 +185,120 @@ export default function SearchPage() {
         {/* Header */}
         <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6">Search & Browse</h1>
 
-        {/* Search Bar */}
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-          <input
-            type="text"
-            placeholder="Search movies, series, VJs..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-10 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#E50914] transition-colors"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          )}
-        </div>
-
-        {/* Filters Row */}
-        <div className="flex flex-wrap items-center gap-3 mb-6" ref={filtersRef}>
-          {/* VJ Filter Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => {
-                setVjDropdownOpen(!vjDropdownOpen)
-                setGenreDropdownOpen(false)
-              }}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all border ${selectedVJ
-                  ? "bg-[#E50914]/20 border-[#E50914]/50 text-[#E50914]"
-                  : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-500"
-                }`}
-            >
-              <span>{selectedVJName || "All VJs"}</span>
-              <ChevronDown className={`w-4 h-4 transition-transform ${vjDropdownOpen ? "rotate-180" : ""}`} />
-            </button>
-            {vjDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 w-56 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl z-50 max-h-64 overflow-y-auto">
-                <button
-                  onClick={() => { setSelectedVJ(""); setVjDropdownOpen(false) }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-800 transition-colors ${!selectedVJ ? "text-[#E50914] font-semibold" : "text-gray-300"
-                    }`}
-                >
-                  All VJs
-                </button>
-                {vjs.map((vj) => (
-                  <button
-                    key={vj.id}
-                    onClick={() => { setSelectedVJ(vj.id); setVjDropdownOpen(false) }}
-                    className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-800 transition-colors ${selectedVJ === vj.id ? "text-[#E50914] font-semibold" : "text-gray-300"
-                      }`}
-                  >
-                    {vj.name}
-                  </button>
-                ))}
-              </div>
+        {/* Search and Filters */}
+        <div className="mb-8 flex flex-col md:flex-row gap-3" ref={filtersRef}>
+          <div className="flex-1 relative group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4 group-focus-within:text-[#E50914] transition-colors" />
+            <input
+              type="text"
+              placeholder="Search movies, series, VJs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-10 py-3 bg-[#1a1a1a] border border-gray-800 rounded-none text-white placeholder-gray-600 focus:outline-none focus:border-[#E50914] transition-colors text-sm tracking-wide"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
             )}
           </div>
-
-          {/* Genre Filter Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => {
-                setGenreDropdownOpen(!genreDropdownOpen)
-                setVjDropdownOpen(false)
-              }}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all border ${selectedGenre
-                  ? "bg-[#E50914]/20 border-[#E50914]/50 text-[#E50914]"
-                  : "bg-gray-800 border-gray-700 text-gray-300 hover:border-gray-500"
+          
+          <div className="flex flex-wrap gap-2">
+            {/* VJ Filter Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setVjDropdownOpen(!vjDropdownOpen)
+                  setGenreDropdownOpen(false)
+                }}
+                className={`flex items-center gap-2 px-4 py-3 border text-sm font-medium tracking-wider uppercase transition-all ${
+                  selectedVJ
+                    ? 'bg-[#E50914] border-[#E50914] text-white'
+                    : 'bg-[#1a1a1a] border-gray-800 text-gray-400 hover:border-[#E50914] hover:text-white'
                 }`}
-            >
-              <span>{selectedGenreName || "All Genres"}</span>
-              <ChevronDown className={`w-4 h-4 transition-transform ${genreDropdownOpen ? "rotate-180" : ""}`} />
-            </button>
-            {genreDropdownOpen && (
-              <div className="absolute top-full left-0 mt-1 w-56 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl z-50 max-h-64 overflow-y-auto">
-                <button
-                  onClick={() => { setSelectedGenre(""); setGenreDropdownOpen(false) }}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-800 transition-colors ${!selectedGenre ? "text-[#E50914] font-semibold" : "text-gray-300"
-                    }`}
-                >
-                  All Genres
-                </button>
-                {genres.map((genre) => (
+              >
+                <Filter className="w-3.5 h-3.5" />
+                <span>{selectedVJName || "VJ"}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${vjDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              
+              {vjDropdownOpen && (
+                <div className="absolute top-full left-0 mt-0 w-52 bg-[#111] border border-gray-800 shadow-2xl z-50 max-h-[50vh] overflow-y-auto scrollbar-hide">
                   <button
-                    key={genre.id}
-                    onClick={() => { setSelectedGenre(genre.id); setGenreDropdownOpen(false) }}
-                    className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-800 transition-colors ${selectedGenre === genre.id ? "text-[#E50914] font-semibold" : "text-gray-300"
-                      }`}
+                    onClick={() => { setSelectedVJ(""); setVjDropdownOpen(false) }}
+                    className="w-full text-left px-4 py-3 text-xs text-gray-500 hover:text-white hover:bg-[#1a1a1a] uppercase tracking-wider transition-colors"
                   >
-                    {genre.name}
+                    All VJs
                   </button>
-                ))}
-              </div>
+                  {vjs.map((vj) => (
+                    <button
+                      key={vj.id}
+                      onClick={() => { setSelectedVJ(vj.id); setVjDropdownOpen(false) }}
+                      className={`w-full text-left px-4 py-3 text-sm hover:bg-[#1a1a1a] transition-colors ${
+                        selectedVJ === vj.id ? "text-[#E50914] font-semibold" : "text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      {vj.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Genre Filter Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setGenreDropdownOpen(!genreDropdownOpen)
+                  setVjDropdownOpen(false)
+                }}
+                className={`flex items-center gap-2 px-4 py-3 border text-sm font-medium tracking-wider uppercase transition-all ${
+                  selectedGenre
+                    ? 'bg-[#E50914] border-[#E50914] text-white'
+                    : 'bg-[#1a1a1a] border-gray-800 text-gray-400 hover:border-[#E50914] hover:text-white'
+                }`}
+              >
+                <Filter className="w-3.5 h-3.5" />
+                <span>{selectedGenreName || "Genre"}</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${genreDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              
+              {genreDropdownOpen && (
+                <div className="absolute top-full left-0 mt-0 w-52 bg-[#111] border border-gray-800 shadow-2xl z-50 max-h-[50vh] overflow-y-auto scrollbar-hide">
+                  <button
+                    onClick={() => { setSelectedGenre(""); setGenreDropdownOpen(false) }}
+                    className="w-full text-left px-4 py-3 text-xs text-gray-500 hover:text-white hover:bg-[#1a1a1a] uppercase tracking-wider transition-colors"
+                  >
+                    All Genres
+                  </button>
+                  {genres.map((genre) => (
+                    <button
+                      key={genre.id}
+                      onClick={() => { setSelectedGenre(genre.id); setGenreDropdownOpen(false) }}
+                      className={`w-full text-left px-4 py-3 text-sm hover:bg-[#1a1a1a] transition-colors ${
+                        selectedGenre === genre.id ? "text-[#E50914] font-semibold" : "text-gray-400 hover:text-white"
+                      }`}
+                    >
+                      {genre.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Clear Filters */}
+            {hasActiveFilters && (
+              <button
+                onClick={clearAllFilters}
+                className="px-4 py-3 border border-gray-800 text-gray-500 hover:border-red-600 hover:text-red-400 text-xs uppercase tracking-wider transition-all"
+              >
+                Clear
+              </button>
             )}
           </div>
-
-          {/* Clear Filters */}
-          {hasActiveFilters && (
-            <button
-              onClick={clearAllFilters}
-              className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:text-white bg-gray-800/50 border border-gray-700 hover:border-gray-500 transition-all"
-            >
-              ✕ Clear Filters
-            </button>
-          )}
         </div>
 
         {/* Tab Buttons */}
@@ -364,27 +361,14 @@ export default function SearchPage() {
             {displayMovies.length > 0 && (
               <div>
                 <h2 className="text-lg font-semibold text-blue-400 mb-4">Movies</h2>
-                <div 
-                  className="flex overflow-x-auto gap-3 pb-4 scrollbar-hide snap-x scroll-smooth"
-                  onScroll={handleScroll}
-                >
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-x-2 gap-y-4">
                   {displayMovies.map((movie) => (
-                    <div key={movie.id} className="flex-none w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] snap-start">
-                      <NetflixCard
-                        content={movie as any}
-                        type="movie"
-                      />
-                    </div>
+                    <NetflixCard
+                      key={movie.id}
+                      content={movie as any}
+                      type="movie"
+                    />
                   ))}
-                  {loadingMore && (
-                    <div className="flex-none w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex items-center justify-center">
-                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
-  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
-  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
-  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
-</span>
-                    </div>
-                  )}
                 </div>
               </div>
             )}
@@ -393,28 +377,34 @@ export default function SearchPage() {
             {displaySeries.length > 0 && (
               <div>
                 <h2 className="text-lg font-semibold text-green-400 mb-4">Series</h2>
-                <div 
-                  className="flex overflow-x-auto gap-3 pb-4 scrollbar-hide snap-x scroll-smooth"
-                  onScroll={handleScroll}
-                >
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-x-2 gap-y-4">
                   {displaySeries.map((s) => (
-                    <div key={s.id} className="flex-none w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] snap-start">
-                      <NetflixCard
-                        content={s as any}
-                        type="series"
-                      />
-                    </div>
+                    <NetflixCard
+                      key={s.id}
+                      content={s as any}
+                      type="series"
+                    />
                   ))}
-                  {loadingMore && (
-                    <div className="flex-none w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex items-center justify-center">
-                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
-  <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
-  <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
-  <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
-</span>
-                    </div>
-                  )}
                 </div>
+              </div>
+            )}
+
+            {/* Load More Button */}
+            {hasMore && (
+              <div className="flex justify-center mt-8 pb-12">
+                <button
+                  onClick={() => setPage(prev => prev + 1)}
+                  disabled={loadingMore}
+                  className="px-6 py-3 border border-gray-800 text-gray-400 hover:border-[#E50914] hover:text-white disabled:opacity-50 text-sm uppercase tracking-wider transition-all"
+                >
+                  {loadingMore ? (
+                    <span className="inline-flex items-center justify-center font-bold tracking-widest text-xl text-[#E50914]">
+                      <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
+                      <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
+                      <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
+                    </span>
+                  ) : "Load More"}
+                </button>
               </div>
             )}
           </div>
