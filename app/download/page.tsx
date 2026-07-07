@@ -478,24 +478,14 @@ export default function DownloadPage() {
             <div className="flex items-center justify-center gap-5">
               <div className="flex flex-col gap-2">
                 <a
-                  href="https://wa.me/256757588585"
+                  href="https://wa.me/256765773436"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/whatsapp-brands-solid-full.svg" alt="WhatsApp" className="w-5 h-5" />
-                  WhatsApp 1
-                </a>
-                <a
-                  href="https://wa.me/256768908155"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/whatsapp-brands-solid-full.svg" alt="WhatsApp" className="w-5 h-5" />
-                  WhatsApp 2
+                  WhatsApp
                 </a>
               </div>
               <a

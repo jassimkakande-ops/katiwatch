@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-const WHATSAPP_NUMBER = "256757588585"; // +256 757588585
+const WHATSAPP_NUMBER = "256765773436"; // +256 765 773 436
 
 export default function WhatsAppFloat() {
   const handleClick = () => {

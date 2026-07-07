@@ -133,16 +133,10 @@ export default function ContactPage() {
                       </p>
                       <div className="flex flex-col gap-1">
                         <a
-                          href="tel:+256757588585"
+                          href="tel:+256765773436"
                           className="text-[#E50914] hover:text-white transition-colors font-medium flex items-center gap-2"
                         >
-                          +256 757 588 585
-                        </a>
-                        <a
-                          href="tel:+256768908155"
-                          className="text-[#E50914] hover:text-white transition-colors font-medium flex items-center gap-2"
-                        >
-                          +256 768 908 155
+                          +256 765 773 436
                         </a>
                       </div>
                     </div>
