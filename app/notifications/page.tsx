@@ -43,7 +43,7 @@ export default async function NotificationsPage() {
                   <h2 className="text-xl font-semibold text-white mb-2">{notif.title}</h2>
                   <p className="text-gray-400 line-clamp-3">{notif.message}</p>
                   <span className="text-xs text-gray-500 mt-3 block">
-                    {new Date(notif.created_at).toLocaleDateString()} {new Date(notif.created_at).toLocaleTimeString()}
+                    {new Date(typeof notif.created_at === "string" ? notif.created_at.replace(/ /g, "T") : notif.created_at).toLocaleDateString()} {new Date(typeof notif.created_at === "string" ? notif.created_at.replace(/ /g, "T") : notif.created_at).toLocaleTimeString()}
                   </span>
                 </div>
               </Link>

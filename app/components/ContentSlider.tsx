@@ -65,7 +65,7 @@ const SliderCard = ({
         <h3 className="font-medium text-white text-xs md:text-sm truncate leading-tight">{title}</h3>
         <div className="flex items-center gap-1 text-[10px] md:text-xs text-gray-400 mt-0.5">
           {releaseDate && (
-            <span>{new Date(releaseDate).getFullYear()}</span>
+            <span>{new Date(typeof releaseDate === "string" ? releaseDate.replace(/ /g, "T") : releaseDate).getFullYear()}</span>
           )}
         </div>
       </div>

@@ -149,7 +149,7 @@ async function activateSubscriptionFromTransaction(
       .single();
 
     if (profile?.subscription_expiry_date) {
-      const expiry = new Date(profile.subscription_expiry_date);
+      const expiry = new Date(typeof profile.subscription_expiry_date === "string" ? profile.subscription_expiry_date.replace(/ /g, "T") : profile.subscription_expiry_date);
       if (expiry > new Date()) {
         console.log('User already has active subscription, skipping webhook activation');
         return;

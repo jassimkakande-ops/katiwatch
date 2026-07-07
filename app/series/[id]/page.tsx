@@ -224,7 +224,7 @@ export default function SeriesDetailsPage() {
   const currentEpisodeIndex = selectedEpisode ? allEpisodes.findIndex(e => e.id === selectedEpisode.id) : -1;
   const activeSeason = seasons.find(s => s.id === activeSeasonId);
   const activeEpisodes = allEpisodes.filter(ep => ep.season_id === activeSeasonId);
-  const releaseYear = series.release_date ? new Date(series.release_date).getFullYear() : "2024";
+  const releaseYear = series.release_date ? new Date(typeof series.release_date === "string" ? series.release_date.replace(/ /g, "T") : series.release_date).getFullYear() : "2024";
 
   return (
     <div className="min-h-screen bg-[#141414] text-white">
@@ -334,7 +334,7 @@ export default function SeriesDetailsPage() {
           <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-3">Trailer</h2>
           <div className="relative w-full aspect-video bg-black overflow-hidden">
             <iframe
-              src={`https://www.youtube.com/embed/${trailerUrl.match(/(?:youtu\.be\/|watch\?v=)([^&?]+)/)?.[1]}?autoplay=1&rel=0&modestbranding=1`}
+              src={`https://www.youtube.com/embed/${trailerUrl.match(/(?:youtu\.be\/|watch\?v=)([^&?]+)/)?.[1]}?autoplay=1&mute=1&rel=0&modestbranding=1`}
               title={`${series.title} — Trailer`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

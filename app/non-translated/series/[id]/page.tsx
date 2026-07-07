@@ -67,7 +67,7 @@ const NonTranslatedCard = ({ content, type, isAnime }: { content: TMDBTVShow; ty
         <h3 className="font-semibold text-white text-sm truncate">{title}</h3>
         <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
           {releaseDate && (
-            <span>{new Date(releaseDate).getFullYear()}</span>
+            <span>{new Date(typeof releaseDate === "string" ? releaseDate.replace(/ /g, "T") : releaseDate).getFullYear()}</span>
           )}
           {type === 'tv' && content.number_of_seasons && (
             <>
@@ -331,7 +331,7 @@ export default function NonTranslatedSeriesDetailsPage() {
         title={series.name}
         subtitle={undefined}
         description={series.overview || "Experience this series in its original language with subtitles for an authentic viewing experience."}
-        year={series.first_air_date ? new Date(series.first_air_date).getFullYear().toString() : ''}
+        year={series.first_air_date ? new Date(typeof series.first_air_date === "string" ? series.first_air_date.replace(/ /g, "T") : series.first_air_date).getFullYear().toString() : ''}
         vj={undefined}
         genres={genres.length > 0 ? genres : ["Drama"]}
         coverImage={series.backdrop_path ? `https://image.tmdb.org/t/p/original${series.backdrop_path}` : series.poster_path ? `https://image.tmdb.org/t/p/w500${series.poster_path}` : `https://via.placeholder.com/300x450/1f2937/f97316?text=${encodeURIComponent(series.name)}`}
@@ -364,7 +364,7 @@ export default function NonTranslatedSeriesDetailsPage() {
                     <div className="flex-1">
                       <h4 className="font-semibold text-white">{season.name}</h4>
                       {season.air_date && (
-                        <p className="text-sm text-gray-400">{new Date(season.air_date).getFullYear()}</p>
+                        <p className="text-sm text-gray-400">{new Date(typeof season.air_date === "string" ? season.air_date.replace(/ /g, "T") : season.air_date).getFullYear()}</p>
                       )}
                       {season.episode_count && (
                         <p className="text-sm text-gray-400">{season.episode_count} episodes</p>

@@ -124,7 +124,7 @@ export default function MovieDetailsPage() {
   }
 
   const coverImage = movie.cover_image_url || `https://via.placeholder.com/1920x1080/141414/e50914?text=${encodeURIComponent(movie.title)}`;
-  const releaseYear = movie.release_date ? new Date(movie.release_date).getFullYear() : "2024";
+  const releaseYear = movie.release_date ? new Date(typeof movie.release_date === "string" ? movie.release_date.replace(/ /g, "T") : movie.release_date).getFullYear() : "2024";
   const duration = movie.duration ? `${Math.floor(movie.duration / 60)}h ${movie.duration % 60}m` : null;
 
   return (
@@ -226,7 +226,7 @@ export default function MovieDetailsPage() {
           <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-3">Trailer</h2>
           <div className="relative w-full aspect-video bg-black overflow-hidden">
             <iframe
-              src={`https://www.youtube.com/embed/${trailerUrl.match(/(?:youtu\.be\/|watch\?v=)([^&?]+)/)?.[1]}?autoplay=1&rel=0&modestbranding=1`}
+              src={`https://www.youtube.com/embed/${trailerUrl.match(/(?:youtu\.be\/|watch\?v=)([^&?]+)/)?.[1]}?autoplay=1&mute=1&rel=0&modestbranding=1`}
               title={`${movie.title} — Trailer`}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

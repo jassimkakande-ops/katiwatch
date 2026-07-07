@@ -36,7 +36,7 @@ export default function MovieCard({ content }: MovieCardProps) {
       {/* Meta info */}
       <div className="flex items-center gap-1 text-[10px] text-gray-400 mt-0.5">
         {releaseDate && (
-          <span>{new Date(releaseDate).getFullYear()}</span>
+          <span>{new Date(typeof releaseDate === "string" ? releaseDate.replace(/ /g, "T") : releaseDate).getFullYear()}</span>
         )}
       </div>
     </Link>

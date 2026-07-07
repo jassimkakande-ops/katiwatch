@@ -58,7 +58,7 @@ const NonTranslatedCard = ({ content, type }: { content: TMDBMovie; type: 'movie
         <h3 className="font-semibold text-white text-sm truncate">{title}</h3>
         <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
           {releaseDate && (
-            <span>{new Date(releaseDate).getFullYear()}</span>
+            <span>{new Date(typeof releaseDate === "string" ? releaseDate.replace(/ /g, "T") : releaseDate).getFullYear()}</span>
           )}
           {type === 'movie' && content.runtime && (
             <>
@@ -171,7 +171,7 @@ export default function NonTranslatedMovieDetailsPage() {
         title={movie.title}
         subtitle={undefined}
         description={movie.overview || "Experience this movie in its original language with subtitles for an authentic cinematic experience."}
-        year={movie.release_date ? new Date(movie.release_date).getFullYear().toString() : ''}
+        year={movie.release_date ? new Date(typeof movie.release_date === "string" ? movie.release_date.replace(/ /g, "T") : movie.release_date).getFullYear().toString() : ''}
         vj={undefined}
         genres={genres.length > 0 ? genres : ["Drama"]}
         coverImage={movie.backdrop_path ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}` : movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : `https://via.placeholder.com/300x450/1f2937/f97316?text=${encodeURIComponent(movie.title)}`}

@@ -57,7 +57,7 @@ export default function ProfilePage() {
               </div>
               <div className="text-xl font-semibold mb-1">{profile.name || profile.email}</div>
               <div className="text-sm text-gray-400 mb-1">Email: {profile.email}</div>
-              <div className="text-sm text-gray-400 mb-1">Joined: {profile.created_at ? new Date(profile.created_at).toLocaleDateString() : ''}</div>
+              <div className="text-sm text-gray-400 mb-1">Joined: {profile.created_at ? new Date(typeof profile.created_at === "string" ? profile.created_at.replace(/ /g, "T") : profile.created_at).toLocaleDateString() : ''}</div>
               {profile.favorite_genres && profile.favorite_genres.length > 0 && (
                 <div className="text-sm text-gray-400 mb-1">Favorite Genres: {profile.favorite_genres.join(', ')}</div>
               )}
@@ -77,10 +77,10 @@ export default function ProfilePage() {
                 <div className="text-yellow-300 mb-2">No active subscription.</div>
               )}
               {profile.subscription_start_date && (
-                <div className="text-sm text-gray-400 mb-1">Start: {new Date(profile.subscription_start_date).toLocaleDateString()}</div>
+                <div className="text-sm text-gray-400 mb-1">Start: {new Date(typeof profile.subscription_start_date === "string" ? profile.subscription_start_date.replace(/ /g, "T") : profile.subscription_start_date).toLocaleDateString()}</div>
               )}
               {profile.subscription_expiry_date && (
-                <div className="text-sm text-gray-400 mb-1">Expires: {new Date(profile.subscription_expiry_date).toLocaleDateString()}</div>
+                <div className="text-sm text-gray-400 mb-1">Expires: {new Date(typeof profile.subscription_expiry_date === "string" ? profile.subscription_expiry_date.replace(/ /g, "T") : profile.subscription_expiry_date).toLocaleDateString()}</div>
               )}
             </div>
           </div>

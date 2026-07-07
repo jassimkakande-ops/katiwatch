@@ -36,7 +36,7 @@ export default function SeriesCard({ content }: SeriesCardProps) {
       {/* Meta info */}
       <div className="flex items-center gap-1 text-[10px] text-gray-400 mt-0.5">
         {firstAirDate && (
-          <span>{new Date(firstAirDate).getFullYear()}</span>
+          <span>{new Date(typeof firstAirDate === "string" ? firstAirDate.replace(/ /g, "T") : firstAirDate).getFullYear()}</span>
         )}
       </div>
     </Link>

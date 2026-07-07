@@ -170,7 +170,7 @@ export default function HomePage() {
                   </p>
                   <div className="flex flex-wrap items-center gap-4 mb-8 text-xs md:text-sm font-medium text-gray-300">
                     {featuredItem.release_date && (
-                      <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-[#E50914]" />{new Date(featuredItem.release_date).getFullYear()}</div>
+                      <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-[#E50914]" />{new Date(typeof featuredItem.release_date === "string" ? featuredItem.release_date.replace(/ /g, "T") : featuredItem.release_date).getFullYear()}</div>
                     )}
                     {featuredItem.vjs && (
                       <div className="flex items-center gap-2"><Mic className="w-4 h-4 text-[#E50914]" />{featuredItem.vjs.name}</div>
@@ -254,7 +254,7 @@ export default function HomePage() {
                       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/80 to-transparent z-[5]" />
                       <div className="absolute bottom-3 left-3 right-3 z-10">
                         <div className="flex items-center gap-2 mb-1 text-xs text-gray-300">
-                          {item.release_date && <span>{new Date(item.release_date).getFullYear()}</span>}
+                          {item.release_date && <span>{new Date(typeof item.release_date === "string" ? item.release_date.replace(/ /g, "T") : item.release_date).getFullYear()}</span>}
                           {item.duration && <><span>•</span><span>{Math.floor(item.duration / 60)}h {item.duration % 60}m</span></>}
                           {item.type === 'series' && <><span>•</span><span>(Season 1)</span></>}
                         </div>

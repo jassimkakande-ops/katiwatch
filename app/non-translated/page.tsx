@@ -71,7 +71,7 @@ const NonTranslatedCard = ({ content, type, isAnimeRow = false }: { content: TMD
         <h3 className="font-semibold text-white text-sm truncate">{title}</h3>
         <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
           {releaseDate && (
-            <span>{new Date(releaseDate).getFullYear()}</span>
+            <span>{new Date(typeof releaseDate === "string" ? releaseDate.replace(/ /g, "T") : releaseDate).getFullYear()}</span>
           )}
           {displayType === 'series' && 'number_of_seasons' in content && content.number_of_seasons && (
             <>
@@ -265,10 +265,10 @@ export default function NonTranslatedPage() {
                       {featuredContent[currentSlide]?.media_type === 'movie' ? 'Movie' : 'TV Show'}
                     </span>
                     {featuredContent[currentSlide]?.release_date && (
-                      <span className="text-gray-300">{new Date(featuredContent[currentSlide].release_date!).getFullYear()}</span>
+                      <span className="text-gray-300">{new Date(typeof featuredContent[currentSlide].release_date! === "string" ? featuredContent[currentSlide].release_date!.replace(/ /g, "T") : featuredContent[currentSlide].release_date!).getFullYear()}</span>
                     )}
                     {featuredContent[currentSlide]?.first_air_date && (
-                      <span className="text-gray-300">{new Date(featuredContent[currentSlide].first_air_date!).getFullYear()}</span>
+                      <span className="text-gray-300">{new Date(typeof featuredContent[currentSlide].first_air_date! === "string" ? featuredContent[currentSlide].first_air_date!.replace(/ /g, "T") : featuredContent[currentSlide].first_air_date!).getFullYear()}</span>
                     )}
                   </div>
                   

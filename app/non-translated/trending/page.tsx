@@ -56,7 +56,7 @@ const TrendingCard = ({ content }: { content: TMDBTrendingItem }) => {
         <h3 className="font-semibold text-white text-sm truncate">{title}</h3>
         <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5">
           {releaseDate && (
-            <span>{new Date(releaseDate).getFullYear()}</span>
+            <span>{new Date(typeof releaseDate === "string" ? releaseDate.replace(/ /g, "T") : releaseDate).getFullYear()}</span>
           )}
           {displayType === 'series' && 'number_of_seasons' in content && content.number_of_seasons && (
             <>

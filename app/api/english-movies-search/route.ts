@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
         rating: item.vote_average,
         release_date: item.release_date,
         genre: item.genre_ids || [],
-        year: item.release_date ? new Date(item.release_date).getFullYear().toString() : null,
+        year: item.release_date ? new Date(typeof item.release_date === "string" ? item.release_date.replace(/ /g, "T") : item.release_date).getFullYear().toString() : null,
         published: true,
         trending: false,
         popular: true,

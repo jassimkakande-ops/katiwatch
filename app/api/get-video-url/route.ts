@@ -126,7 +126,7 @@ export async function GET(request: NextRequest) {
 
       const hasSubscription = profile?.subscription && profile.subscription !== 'free';
       const isNotExpired = profile?.subscription_expiry_date &&
-                          new Date(profile.subscription_expiry_date) > new Date();
+                          new Date(typeof profile.subscription_expiry_date === "string" ? profile.subscription_expiry_date.replace(/ /g, "T") : profile.subscription_expiry_date) > new Date();
 
       if (!hasSubscription || !isNotExpired) {
         return NextResponse.json(
