@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/panel/', '/admin/', '/profile/', '/reset-password/'],
     },
-    sitemap: 'https://katiwatchug.com/sitemap.xml',
+    sitemap: 'https://katiwatch.com/sitemap.xml',
   }
 }
