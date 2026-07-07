@@ -327,7 +327,7 @@ export default function SearchPage() {
         {loading && (
           <div className="flex justify-center py-16">
             <div className="text-center">
-              <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+              <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
@@ -378,7 +378,7 @@ export default function SearchPage() {
                   ))}
                   {loadingMore && (
                     <div className="flex-none w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex items-center justify-center">
-                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
@@ -407,7 +407,7 @@ export default function SearchPage() {
                   ))}
                   {loadingMore && (
                     <div className="flex-none w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] flex items-center justify-center">
-                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>

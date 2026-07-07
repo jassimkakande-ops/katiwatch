@@ -751,7 +751,7 @@ export default function UsersPage() {
               <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Plan</label>
               {isLoadingPlans ? (
                 <div className="w-full px-4 py-3 border border-gray-800 rounded-lg bg-black text-gray-500 flex items-center">
-                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
@@ -830,7 +830,7 @@ export default function UsersPage() {
             >
               {updating ? (
                 <>
-                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
@@ -893,7 +893,7 @@ export default function UsersPage() {
             >
               {deleting ? (
                 <>
-                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
@@ -956,7 +956,7 @@ export default function UsersPage() {
             >
               {deactivating ? (
                 <>
-                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                  <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>

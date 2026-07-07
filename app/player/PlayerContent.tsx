@@ -383,7 +383,7 @@ export default function PlayerContent() {
     return (
       <div className="fixed inset-0 bg-black flex items-center justify-center px-4">
         <div className="text-center text-white max-w-sm w-full">
-          <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+          <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
@@ -454,7 +454,7 @@ export default function PlayerContent() {
         {switchingEpisode && (
           <div className="absolute inset-0 bg-black/80 z-40 flex items-center justify-center">
             <div className="text-center text-white">
-              <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+              <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>

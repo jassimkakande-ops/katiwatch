@@ -38,7 +38,7 @@ export function SearchResults({
   if (loading) {
     return (
       <div className="text-center py-12">
-        <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+        <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>

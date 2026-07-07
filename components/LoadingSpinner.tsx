@@ -25,12 +25,12 @@ export function LoadingSpinner({
 
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
-      <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+      <span className="inline-flex items-center justify-center font-bold tracking-widest text-4xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
 </span>
-      <p className={`text-gray-400 ${textSizeClasses[size]}`}>{text}</p>
+      <p className={`text-[#E50914] mt-2 font-medium ${textSizeClasses[size]}`}>{text}</p>
     </div>
   );
 }

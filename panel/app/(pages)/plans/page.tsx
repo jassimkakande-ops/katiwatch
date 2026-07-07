@@ -294,7 +294,7 @@ export default function PlansPage() {
       {/* Plans Grid */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+          <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
@@ -408,7 +408,7 @@ export default function PlansPage() {
                         disabled={deleting}
                         className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 text-xs font-bold"
                       >
-                        {deleting ? <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                        {deleting ? <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
@@ -632,7 +632,7 @@ export default function PlansPage() {
               className="bg-[#E50914] text-white hover:bg-[#b80710] w-full sm:w-auto uppercase tracking-wider font-bold border-none"
             >
               {saving ? (
-                <><span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                <><span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>

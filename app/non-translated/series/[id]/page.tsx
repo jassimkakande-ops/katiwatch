@@ -211,7 +211,7 @@ export default function NonTranslatedSeriesDetailsPage() {
                 {isPlayerLoading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-900 z-20">
                     <div className="text-white text-center">
-                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-current">
+                      <span className="inline-flex items-center justify-center font-bold tracking-widest text-2xl text-[#E50914]">
   <span className="animate-bounce" style={{ animationDelay: "0ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "150ms" }}>.</span>
   <span className="animate-bounce" style={{ animationDelay: "300ms" }}>.</span>
